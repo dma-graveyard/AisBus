@@ -51,7 +51,7 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 				} catch (IOException e) { }
 			}
 			
-			AisBus.sleep(5000);
+			AisBus.sleep(20000);
 
 		}
 	}

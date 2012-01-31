@@ -1,7 +1,7 @@
 package dk.dma.aisbus;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import dk.frv.ais.filter.MessageDoubletFilter;
 import dk.frv.ais.filter.MessageDownSample;
@@ -11,7 +11,7 @@ import dk.frv.ais.message.AisMessage;
 public class MessageBus implements IAisHandler {
 
 	private IAisHandler handler;
-	protected List<BusConsumer> consumers = new ArrayList<BusConsumer>();
+	protected Set<BusConsumer> consumers = new HashSet<BusConsumer>();
 	
 	public MessageBus(int doubleFilterWindow, int downsamplingRate) {
 		handler = this;
@@ -46,6 +46,10 @@ public class MessageBus implements IAisHandler {
 	
 	public synchronized void addConsumer(BusConsumer busConsumer) {
 		consumers.add(busConsumer);
+	}
+	
+	public synchronized void removeConsumer(BusConsumer busConsumer) {
+		consumers.remove(busConsumer);
 	}
 
 }

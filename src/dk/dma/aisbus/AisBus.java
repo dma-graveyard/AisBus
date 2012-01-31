@@ -45,6 +45,12 @@ public class AisBus {
 		for (TcpWriter tcpWriter : settings.getTcpWriters().values()) {
 			tcpWriter.start();
 		}
+		
+		// Start all TCP providers
+		LOG.info("Starting TCP providers");
+		for (TcpProvider tcpProvider : settings.getTcpProviders().values()) {
+			tcpProvider.start();
+		}
 
 		while (true) {
 			sleep(10000);

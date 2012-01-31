@@ -34,11 +34,13 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 				socket.setKeepAlive(true);
 				PrintWriter out = new PrintWriter(socket.getOutputStream());
 				LOG.info("Connected.");
+				
+				addToBus();
 
 				while (!out.checkError()) {
 					// Wait for message and write
 					AisMessage aisMessage = queue.take();
-					out.print(aisMessage.getVdm().getOrgLinesJoined());
+					out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
 				}
 
 			} catch (IOException e) {
@@ -50,6 +52,8 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 					socket.close();
 				} catch (IOException e) { }
 			}
+			
+			removeFromBus();
 			
 			AisBus.sleep(20000);
 

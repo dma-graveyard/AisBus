@@ -24,6 +24,7 @@ public class Settings {
 	private Map<String, TcpReader> tcpReaders = new HashMap<String, TcpReader>();
 	private Map<String, TcpServer> tcpServers = new HashMap<String, TcpServer>();
 	private Map<String, TcpWriter> tcpWriters = new HashMap<String, TcpWriter>();
+	private Map<String, TcpProvider> tcpProviders = new HashMap<String, TcpProvider>();
 
 	public Settings() {
 
@@ -99,6 +100,19 @@ public class Settings {
 			
 			LOG.info("Added TCP writer " + name + " (" + tcpWriter.getHost() + ":" + tcpWriter.getPort() + ")");
 		}
+		
+		// Create TCP providers
+		String tcpProvidersStr = props.getProperty("tcp_providers", "");
+		for (String name : StringUtils.split(tcpProvidersStr, ",")) {
+			TcpProvider tcpProvider = new TcpProvider(messageBus);
+			tcpProvider.setPort(getInt("tcp_provider_port." + name, "0"));
+			tcpProvider.setDownsamplingRate(getInt("tcp_provider_downsampling." + name, "0"));
+			tcpProvider.setDoubleFilterWindow(getInt("tcp_provider_doublet_filtering." + name, "0"));
+			
+			tcpProviders.put(name, tcpProvider);
+			
+			LOG.info("Added TCP provider " + name + " (" + tcpProvider.getPort() + ")");
+		}
 
 	}
 
@@ -117,6 +131,10 @@ public class Settings {
 
 	public Map<String, TcpServer> getTcpServers() {
 		return tcpServers;
+	}
+	
+	public Map<String, TcpProvider> getTcpProviders() {
+		return tcpProviders;
 	}
 
 	public int getDoubleFilterWindow() {

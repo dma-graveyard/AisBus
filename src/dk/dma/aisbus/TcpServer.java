@@ -56,6 +56,7 @@ public class TcpServer extends Thread implements IAisHandler {
 			try {
 				socket = serverSocket.accept();
 				socket.setSoTimeout(timeout * 1000);
+				socket.setKeepAlive(true);
 				LOG.info("TCP server received connection from " + socket.getRemoteSocketAddress());
 				
 				AisStreamReader streamReader = new AisStreamReader(socket.getInputStream());

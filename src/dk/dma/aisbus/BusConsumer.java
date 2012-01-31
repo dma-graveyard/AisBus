@@ -61,8 +61,15 @@ public abstract class BusConsumer extends Thread implements IAisHandler {
 			doubletFilter.registerReceiver(handler);
 			handler = doubletFilter;
 		}
-		
+				
+	}
+	
+	protected void addToBus() {
 		messageBus.addConsumer(this);
+	}
+	
+	protected void removeFromBus() {
+		messageBus.removeConsumer(this);
 	}
 		
 	public void setDoubleFilterWindow(int doubleFilterWindow) {

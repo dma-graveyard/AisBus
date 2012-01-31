@@ -2,6 +2,7 @@
 <project name="aisbus" default="compile">
 
 	<property name="lib" value="${basedir}/lib" />
+	<property name="bin" value="${basedir}/bin" />
 
 	<property name="build.dir" value="${basedir}/build" />
 	<property name="build.classes.dir" value="${build.dir}/classes" />
@@ -45,6 +46,30 @@
 				<pathelement path="${basedir}"/>
 			</classpath>
 		</java>
+	</target>
+
+	<target name="bin" depends="compile">
+		<mkdir dir="${bin}/lib" />
+		<mkdir dir="${bin}/log" />
+		<copy todir="${bin}/lib">
+			<fileset dir="${lib}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<jar file="${bin}/lib/aisbus.jar">
+			<fileset dir="${build.classes.dir}" />
+			<manifest>
+				<attribute name="Built-By" value="${user.name}" />
+				<attribute name="Main-Class" value="dk.dma.aisbus.AisBus" />
+				<section name="dk/dma/aisbus">
+					<attribute name="Specification-Title" value="AisBus" />
+					<attribute name="Specification-Vendor" value="Danish Maritime Authority" />
+					<attribute name="Package-Title" value="dk.dma.aisbus" />
+					<attribute name="Package-Vendor" value="dk.dma.aisbus" />
+					<attribute name="Package-Vendor-Id" value="DMA" />
+				</section>
+			</manifest>
+		</jar>
 	</target>
 
 </project>

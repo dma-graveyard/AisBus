@@ -8,18 +8,14 @@ import dk.frv.ais.reader.AisReader;
 
 public class TcpReader implements IAisHandler {
 
+	private MessageBus messageBus;
 	private AisReader aisReader;
 	private int downsamplingRate;
 	private int doubleFilterWindow;
 
-	public TcpReader(AisReader aisReader) {
+	public TcpReader(AisReader aisReader, MessageBus messageBus) {
 		this.aisReader = aisReader;
-	}
-
-	@Override
-	public void receive(AisMessage aisMessage) {
-		System.out.println("received message: " + aisMessage);
-
+		this.messageBus = messageBus;
 	}
 
 	public void start() {
@@ -41,6 +37,11 @@ public class TcpReader implements IAisHandler {
 		// Start reader
 		aisReader.registerHandler(handler);
 		aisReader.start();
+	}
+	
+	@Override
+	public void receive(AisMessage aisMessage) {
+		messageBus.push(aisMessage);
 	}
 
 	public void setAisReader(AisReader aisReader) {

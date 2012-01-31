@@ -34,6 +34,12 @@ public class AisBus {
 			tcpReader.start();
 		}
 		
+		// Start all TCP writers
+		LOG.info("Starting TCP servers");
+		for (TcpServer tcpServer : settings.getTcpServers().values()) {
+			tcpServer.start();
+		}
+		
 		while(true) {
 			sleep(10000);
 			

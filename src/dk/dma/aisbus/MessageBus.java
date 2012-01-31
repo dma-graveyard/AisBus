@@ -1,12 +1,41 @@
 package dk.dma.aisbus;
 
-public class MessageBus extends Thread {
+import dk.frv.ais.filter.MessageDoubletFilter;
+import dk.frv.ais.filter.MessageDownSample;
+import dk.frv.ais.handler.IAisHandler;
+import dk.frv.ais.message.AisMessage;
+
+public class MessageBus implements IAisHandler {
+
+	private IAisHandler handler;
 	
-	
-	
+	public MessageBus(int doubleFilterWindow, int downsamplingRate) {
+		handler = this;
+		// Maybe insert down sampling filter
+		if (downsamplingRate > 0) {
+			MessageDownSample downsample = new MessageDownSample(downsamplingRate);
+			downsample.registerReceiver(handler);
+			handler = downsample;
+		}
+		// Maybe insert doublet filtering
+		if (doubleFilterWindow > 0) {
+			MessageDoubletFilter doubletFilter = new MessageDoubletFilter();
+			doubletFilter.setWindowSize(doubleFilterWindow);
+			doubletFilter.registerReceiver(handler);
+			handler = doubletFilter;
+		}
+
+	}
+
 	@Override
-	public void run() {
-		
+	public synchronized void receive(AisMessage aisMessage) {
+		// Output from message bus
+		System.out.println(aisMessage.getVdm().getOrgLinesJoined());
+	}
+	
+	public synchronized void push(AisMessage aisMessage) {
+		// Push to handler
+		handler.receive(aisMessage);		
 	}
 
 }

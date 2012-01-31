@@ -20,7 +20,9 @@ public class Settings {
 	private int doubleFilterWindow;
 	private int downsamplingRate;
 	
-	private Map<String, TcpReader> tcpReaders = new HashMap<String, TcpReader>(); 
+	private MessageBus messageBus;
+	private Map<String, TcpReader> tcpReaders = new HashMap<String, TcpReader>();
+	private Map<String, TcpServer> tcpServers = new HashMap<String, TcpServer>();
 	
 	public Settings() {
 
@@ -41,6 +43,8 @@ public class Settings {
 		// Determine downsampling
 		downsamplingRate = getInt("downsampling", "0");
 		
+		messageBus = new MessageBus(doubleFilterWindow, downsamplingRate);
+		
 		// Create TCP readers
 		String tcpReadersStr = props.getProperty("tcp_readers", "");
 		for (String name : StringUtils.split(tcpReadersStr, ",")) {
@@ -59,7 +63,7 @@ public class Settings {
 			reader.addProprietaryFactory(new GatehouseFactory());
 			
 			// Make TCP reader
-			TcpReader tcpReader = new TcpReader(reader);
+			TcpReader tcpReader = new TcpReader(reader, messageBus);
 			tcpReader.setDownsamplingRate(getInt("tcp_reader_downsampling." + name, "0"));
 			tcpReader.setDoubleFilterWindow(getInt("tcp_reader_doublet_filtering." + name, "0"));			
 			
@@ -67,7 +71,22 @@ public class Settings {
 			
 			LOG.info("Added TCP reader " + name + " (" + hostsStr + ")");
 		}
-		
+
+		// Create TCP servers
+		String tcpServersStr = props.getProperty("tcp_servers", "");
+		for (String name : StringUtils.split(tcpServersStr, ",")) {
+			TcpServer tcpServer = new TcpServer(messageBus);
+			tcpServer.setPort(getInt("tcp_server_port." + name, "0"));
+			tcpServer.setTimeout(getInt("tcp_server_timeout." + name, "0"));
+			tcpServer.setDownsamplingRate(getInt("tcp_server_downsampling." + name, "0"));
+			tcpServer.setDoubleFilterWindow(getInt("tcp_server_doublet_filtering." + name, "0"));
+			
+			tcpServers.put(name, tcpServer);
+			
+			LOG.info("Added TCP server " + name + " (" + tcpServer.getPort() + ")");
+		}
+
+			
 		
 	}
 	
@@ -78,6 +97,18 @@ public class Settings {
 	
 	public Map<String, TcpReader> getTcpReaders() {
 		return tcpReaders;
+	}
+	
+	public Map<String, TcpServer> getTcpServers() {
+		return tcpServers;
+	}
+	
+	public int getDoubleFilterWindow() {
+		return doubleFilterWindow;
+	}
+	
+	public int getDownsamplingRate() {
+		return downsamplingRate;
 	}
 
 }

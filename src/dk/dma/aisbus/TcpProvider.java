@@ -43,6 +43,7 @@ public class TcpProvider extends BusComponent implements Runnable {
 				client.setDownsamplingRate(downsamplingRate);
 				client.setMessageFilter(messageFilter);
 				client.setGzipCompress(gzipCompress);
+				client.setGzipBufferSize(gzipBufferSize);
 				client.start();				
 			} catch (IOException e) {
 				LOG.error("TCP provider failed: " + e.getMessage());

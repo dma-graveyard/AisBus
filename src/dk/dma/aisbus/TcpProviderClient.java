@@ -31,7 +31,7 @@ public class TcpProviderClient extends BusConsumer {
 			OutputStream outputStream;
 			if (isGzipCompress()) {
 				System.out.println("using gzip compression");
-				outputStream = new GZIPOutputStream(socket.getOutputStream());
+				outputStream = new GZIPOutputStream(socket.getOutputStream(), gzipBufferSize);
 			} else {
 				outputStream = socket.getOutputStream();
 			}			

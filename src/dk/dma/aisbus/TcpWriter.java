@@ -37,7 +37,7 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 				
 				OutputStream outputStream;
 				if (isGzipCompress()) {
-					outputStream = new GZIPOutputStream(socket.getOutputStream());
+					outputStream = new GZIPOutputStream(socket.getOutputStream(), gzipBufferSize);
 				} else {
 					outputStream = socket.getOutputStream();
 				}
@@ -52,8 +52,6 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 					AisMessage aisMessage = queue.take();
 					if (isFilterAllowed(aisMessage)) {
 						out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
-					} else {
-						System.out.println("Message filtered away: " + aisMessage.getMsgId());
 					}
 				}
 

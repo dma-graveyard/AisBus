@@ -6,16 +6,13 @@ import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.reader.AisReader;
 
-public class TcpReader implements IAisHandler {
+public class TcpReader extends BusComponent implements IAisHandler {
 
-	private MessageBus messageBus;
 	private AisReader aisReader;
-	private int downsamplingRate;
-	private int doubleFilterWindow;
 
 	public TcpReader(AisReader aisReader, MessageBus messageBus) {
+		super(messageBus);
 		this.aisReader = aisReader;
-		this.messageBus = messageBus;
 	}
 
 	public void start() {
@@ -38,22 +35,16 @@ public class TcpReader implements IAisHandler {
 		aisReader.registerHandler(handler);
 		aisReader.start();
 	}
-	
+
 	@Override
 	public void receive(AisMessage aisMessage) {
-		messageBus.push(aisMessage);
+		if (isFilterAllowed(aisMessage)) {
+			messageBus.push(aisMessage);
+		}
 	}
 
 	public void setAisReader(AisReader aisReader) {
 		this.aisReader = aisReader;
-	}
-
-	public void setDoubleFilterWindow(int doubleFilterWindow) {
-		this.doubleFilterWindow = doubleFilterWindow;
-	}
-
-	public void setDownsamplingRate(int downsamplingRate) {
-		this.downsamplingRate = downsamplingRate;
 	}
 
 }

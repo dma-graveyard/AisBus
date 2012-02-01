@@ -12,18 +12,19 @@ import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.reader.AisStreamReader;
 
-public class TcpServer extends Thread implements IAisHandler {
+public class TcpServer extends BusComponent implements IAisHandler, Runnable {
 	
 	private static final Logger LOG = Logger.getLogger(TcpServer.class);
 	
-	private MessageBus messageBus;
-	private int downsamplingRate;
-	private int doubleFilterWindow;
 	private int port;
 	private int timeout;
 	
 	public TcpServer(MessageBus messageBus) {
-		this.messageBus = messageBus;
+		super(messageBus);
+	}
+	
+	public void start() {
+		(new Thread(this)).start();
 	}
 	
 	@Override
@@ -79,15 +80,9 @@ public class TcpServer extends Thread implements IAisHandler {
 
 	@Override
 	public void receive(AisMessage aisMessage) {
-		messageBus.push(aisMessage);
-	}
-	
-	public void setDoubleFilterWindow(int doubleFilterWindow) {
-		this.doubleFilterWindow = doubleFilterWindow;
-	}
-
-	public void setDownsamplingRate(int downsamplingRate) {
-		this.downsamplingRate = downsamplingRate;
+		if (isFilterAllowed(aisMessage)) {
+			messageBus.push(aisMessage);
+		}
 	}
 	
 	public void setTimeout(int timeout) {

@@ -67,6 +67,7 @@ public class Settings {
 			TcpReader tcpReader = new TcpReader(reader, messageBus);
 			tcpReader.setDownsamplingRate(getInt("tcp_reader_downsampling." + name, "0"));
 			tcpReader.setDoubleFilterWindow(getInt("tcp_reader_doublet_filtering." + name, "0"));
+			tcpReader.setMessageFilter(props.getProperty("tcp_reader_message_id_filter." + name, ""));
 
 			tcpReaders.put(name, tcpReader);
 
@@ -81,6 +82,7 @@ public class Settings {
 			tcpServer.setTimeout(getInt("tcp_server_timeout." + name, "0"));
 			tcpServer.setDownsamplingRate(getInt("tcp_server_downsampling." + name, "0"));
 			tcpServer.setDoubleFilterWindow(getInt("tcp_server_doublet_filtering." + name, "0"));
+			tcpServer.setMessageFilter(props.getProperty("tcp_server_message_id_filter." + name, ""));
 
 			tcpServers.put(name, tcpServer);
 
@@ -95,6 +97,7 @@ public class Settings {
 			tcpWriter.setPort(getInt("tcp_writer_port." + name, "0"));
 			tcpWriter.setDownsamplingRate(getInt("tcp_writer_downsampling." + name, "0"));
 			tcpWriter.setDoubleFilterWindow(getInt("tcp_writer_doublet_filtering." + name, "0"));
+			tcpWriter.setMessageFilter(props.getProperty("tcp_writer_message_id_filter." + name, ""));
 			
 			tcpWriters.put(name, tcpWriter);
 			
@@ -108,6 +111,7 @@ public class Settings {
 			tcpProvider.setPort(getInt("tcp_provider_port." + name, "0"));
 			tcpProvider.setDownsamplingRate(getInt("tcp_provider_downsampling." + name, "0"));
 			tcpProvider.setDoubleFilterWindow(getInt("tcp_provider_doublet_filtering." + name, "0"));
+			tcpProvider.setMessageFilter(props.getProperty("tcp_provider_message_id_filter." + name, ""));
 			
 			tcpProviders.put(name, tcpProvider);
 			

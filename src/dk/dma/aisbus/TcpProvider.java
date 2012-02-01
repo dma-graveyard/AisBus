@@ -6,17 +6,18 @@ import java.net.Socket;
 
 import org.apache.log4j.Logger;
 
-public class TcpProvider extends Thread {
+public class TcpProvider extends BusComponent implements Runnable {
 
 	private static final Logger LOG = Logger.getLogger(TcpProvider.class);
 
-	private MessageBus messageBus;
 	private int port;
-	private int downsamplingRate;
-	private int doubleFilterWindow;
 
 	public TcpProvider(MessageBus messageBus) {
-		this.messageBus = messageBus;
+		super(messageBus);
+	}
+	
+	public void start() {
+		(new Thread(this)).start();
 	}
 
 	@Override
@@ -40,6 +41,7 @@ public class TcpProvider extends Thread {
 				TcpProviderClient client = new TcpProviderClient(messageBus, socket);
 				client.setDoubleFilterWindow(doubleFilterWindow);
 				client.setDownsamplingRate(downsamplingRate);
+				client.setMessageFilter(messageFilter);
 				client.start();				
 			} catch (IOException e) {
 				LOG.error("TCP provider failed: " + e.getMessage());
@@ -56,20 +58,4 @@ public class TcpProvider extends Thread {
 		this.port = port;
 	}
 	
-	public int getDoubleFilterWindow() {
-		return doubleFilterWindow;
-	}
-	
-	public void setDoubleFilterWindow(int doubleFilterWindow) {
-		this.doubleFilterWindow = doubleFilterWindow;
-	}
-	
-	public int getDownsamplingRate() {
-		return downsamplingRate;
-	}
-	
-	public void setDownsamplingRate(int downsamplingRate) {
-		this.downsamplingRate = downsamplingRate;
-	}
-
 }

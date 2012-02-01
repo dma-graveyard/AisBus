@@ -28,8 +28,10 @@ public class TcpProviderClient extends BusConsumer {
 		try {
 			PrintWriter out = new PrintWriter(socket.getOutputStream());
 			while (!out.checkError()) {
-				AisMessage aisMessage = queue.take();
-				out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");				
+				AisMessage aisMessage = queue.take();				
+				if (isFilterAllowed(aisMessage)) {
+					out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
+				}
 			}
 		} catch (IOException e) {
 			LOG.info("Connection closed from provider client");

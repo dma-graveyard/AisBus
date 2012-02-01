@@ -11,22 +11,23 @@ import dk.frv.ais.filter.MessageDownSample;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 
-public abstract class BusConsumer extends Thread implements IAisHandler {
+public abstract class BusConsumer extends BusComponent implements IAisHandler, Runnable {
 	
 	private static final Logger LOG = Logger.getLogger(BusConsumer.class);
 	
 	public static final int QUEUE_SIZE = 1000;
 	
 	protected BlockingQueue<AisMessage> queue = new ArrayBlockingQueue<AisMessage>(QUEUE_SIZE);
-	private int downsamplingRate;
-	private int doubleFilterWindow;
-	private MessageBus messageBus;
 	private Date lastInsertErrorReported = new Date(0);
 	
 	protected IAisHandler handler;
 	
 	public BusConsumer(MessageBus messageBus) {
-		this.messageBus = messageBus;
+		super(messageBus);
+	}
+	
+	public void start() {
+		(new Thread(this)).start();
 	}
 	
 	@Override
@@ -72,12 +73,4 @@ public abstract class BusConsumer extends Thread implements IAisHandler {
 		messageBus.removeConsumer(this);
 	}
 		
-	public void setDoubleFilterWindow(int doubleFilterWindow) {
-		this.doubleFilterWindow = doubleFilterWindow;
-	}
-	
-	public void setDownsamplingRate(int downsamplingRate) {
-		this.downsamplingRate = downsamplingRate;
-	}
-
 }

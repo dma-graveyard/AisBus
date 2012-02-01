@@ -40,7 +40,11 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 				while (!out.checkError()) {
 					// Wait for message and write
 					AisMessage aisMessage = queue.take();
-					out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
+					if (isFilterAllowed(aisMessage)) {
+						out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
+					} else {
+						System.out.println("Message filtered away: " + aisMessage.getMsgId());
+					}
 				}
 
 			} catch (IOException e) {

@@ -13,6 +13,7 @@ public class BusComponent {
 	protected int downsamplingRate;
 	protected int doubleFilterWindow;
 	protected Set<Integer> messageFilter = null;
+	protected boolean gzipCompress = false;
 	
 	public BusComponent(MessageBus messageBus) {
 		this.messageBus = messageBus;
@@ -63,6 +64,14 @@ public class BusComponent {
 	
 	public void setMessageFilter(Set<Integer> messageFilter) {
 		this.messageFilter = messageFilter;
+	}
+	
+	public boolean isGzipCompress() {
+		return gzipCompress;
+	}
+	
+	public void setGzipCompress(boolean gzipCompress) {
+		this.gzipCompress = gzipCompress;
 	}
 
 }

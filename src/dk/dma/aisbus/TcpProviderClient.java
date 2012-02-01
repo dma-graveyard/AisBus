@@ -1,8 +1,10 @@
 package dk.dma.aisbus;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.log4j.Logger;
 
@@ -26,7 +28,15 @@ public class TcpProviderClient extends BusConsumer {
 		addToBus();
 
 		try {
-			PrintWriter out = new PrintWriter(socket.getOutputStream());
+			OutputStream outputStream;
+			if (isGzipCompress()) {
+				System.out.println("using gzip compression");
+				outputStream = new GZIPOutputStream(socket.getOutputStream());
+			} else {
+				outputStream = socket.getOutputStream();
+			}			
+			
+			PrintWriter out = new PrintWriter(outputStream);
 			while (!out.checkError()) {
 				AisMessage aisMessage = queue.take();				
 				if (isFilterAllowed(aisMessage)) {

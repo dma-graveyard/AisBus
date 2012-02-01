@@ -1,8 +1,10 @@
 package dk.dma.aisbus;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.log4j.Logger;
 
@@ -60,7 +62,14 @@ public class TcpServer extends BusComponent implements IAisHandler, Runnable {
 				socket.setKeepAlive(true);
 				LOG.info("TCP server received connection from " + socket.getRemoteSocketAddress());
 				
-				AisStreamReader streamReader = new AisStreamReader(socket.getInputStream());
+				InputStream inputStream;
+				if (isGzipCompress()) {
+					inputStream = new GZIPInputStream(socket.getInputStream());
+				} else {
+					inputStream = socket.getInputStream();
+				}
+				
+				AisStreamReader streamReader = new AisStreamReader(inputStream);
 				streamReader.registerHandler(handler);
 				streamReader.start();
 				streamReader.join();

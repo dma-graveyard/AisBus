@@ -1,9 +1,11 @@
 package dk.dma.aisbus;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.zip.GZIPOutputStream;
 
 import org.apache.log4j.Logger;
 
@@ -32,7 +34,15 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 				LOG.info("Connecting to " + host + ":" + port + " ...");
 				socket.connect(address);
 				socket.setKeepAlive(true);
-				PrintWriter out = new PrintWriter(socket.getOutputStream());
+				
+				OutputStream outputStream;
+				if (isGzipCompress()) {
+					outputStream = new GZIPOutputStream(socket.getOutputStream());
+				} else {
+					outputStream = socket.getOutputStream();
+				}
+				
+				PrintWriter out = new PrintWriter(outputStream);
 				LOG.info("Connected.");
 				
 				addToBus();

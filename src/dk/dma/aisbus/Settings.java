@@ -68,6 +68,7 @@ public class Settings {
 			tcpReader.setDownsamplingRate(getInt("tcp_reader_downsampling." + name, "0"));
 			tcpReader.setDoubleFilterWindow(getInt("tcp_reader_doublet_filtering." + name, "0"));
 			tcpReader.setMessageFilter(props.getProperty("tcp_reader_message_id_filter." + name, ""));
+			tcpReader.setGzipCompress(props.getProperty("tcp_reader_gzip_compress." + name, "").equalsIgnoreCase("true"));
 
 			tcpReaders.put(name, tcpReader);
 
@@ -83,6 +84,7 @@ public class Settings {
 			tcpServer.setDownsamplingRate(getInt("tcp_server_downsampling." + name, "0"));
 			tcpServer.setDoubleFilterWindow(getInt("tcp_server_doublet_filtering." + name, "0"));
 			tcpServer.setMessageFilter(props.getProperty("tcp_server_message_id_filter." + name, ""));
+			tcpServer.setGzipCompress(props.getProperty("tcp_server_gzip_compress." + name, "").equalsIgnoreCase("true"));
 
 			tcpServers.put(name, tcpServer);
 
@@ -98,6 +100,7 @@ public class Settings {
 			tcpWriter.setDownsamplingRate(getInt("tcp_writer_downsampling." + name, "0"));
 			tcpWriter.setDoubleFilterWindow(getInt("tcp_writer_doublet_filtering." + name, "0"));
 			tcpWriter.setMessageFilter(props.getProperty("tcp_writer_message_id_filter." + name, ""));
+			tcpWriter.setGzipCompress(props.getProperty("tcp_writer_gzip_compress." + name, "").equalsIgnoreCase("true"));
 			
 			tcpWriters.put(name, tcpWriter);
 			
@@ -112,6 +115,7 @@ public class Settings {
 			tcpProvider.setDownsamplingRate(getInt("tcp_provider_downsampling." + name, "0"));
 			tcpProvider.setDoubleFilterWindow(getInt("tcp_provider_doublet_filtering." + name, "0"));
 			tcpProvider.setMessageFilter(props.getProperty("tcp_provider_message_id_filter." + name, ""));
+			tcpProvider.setGzipCompress(props.getProperty("tcp_provider_gzip_compress." + name, "").equalsIgnoreCase("true"));
 			
 			tcpProviders.put(name, tcpProvider);
 			

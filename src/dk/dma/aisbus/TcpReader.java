@@ -4,6 +4,7 @@ import dk.frv.ais.filter.MessageDoubletFilter;
 import dk.frv.ais.filter.MessageDownSample;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.reader.AisReader;
 
 public class TcpReader extends BusComponent implements IAisHandler {
@@ -32,6 +33,7 @@ public class TcpReader extends BusComponent implements IAisHandler {
 		}
 
 		// Start reader
+		aisReader.addProprietaryFactory(new GatehouseFactory());
 		aisReader.registerHandler(handler);
 		aisReader.start();
 	}

@@ -12,6 +12,7 @@ import dk.frv.ais.filter.MessageDoubletFilter;
 import dk.frv.ais.filter.MessageDownSample;
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
+import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.reader.AisStreamReader;
 
 public class TcpServer extends BusComponent implements IAisHandler, Runnable {
@@ -70,6 +71,7 @@ public class TcpServer extends BusComponent implements IAisHandler, Runnable {
 				}
 				
 				AisStreamReader streamReader = new AisStreamReader(inputStream);
+				streamReader.addProprietaryFactory(new GatehouseFactory());
 				streamReader.registerHandler(handler);
 				streamReader.start();
 				streamReader.join();

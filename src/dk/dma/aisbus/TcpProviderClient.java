@@ -30,7 +30,6 @@ public class TcpProviderClient extends BusConsumer {
 		try {
 			OutputStream outputStream;
 			if (isGzipCompress()) {
-				System.out.println("using gzip compression");
 				outputStream = new GZIPOutputStream(socket.getOutputStream(), gzipBufferSize);
 			} else {
 				outputStream = socket.getOutputStream();
@@ -40,7 +39,7 @@ public class TcpProviderClient extends BusConsumer {
 			while (!out.checkError()) {
 				AisMessage aisMessage = queue.take();				
 				if (isFilterAllowed(aisMessage)) {
-					out.print(aisMessage.getVdm().getOrgLinesJoined() + "\r\n");
+					out.print(aisMessage.reassemble());				
 				}
 			}
 		} catch (IOException e) {

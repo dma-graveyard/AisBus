@@ -51,8 +51,8 @@ public class TcpWriter extends BusConsumer implements IAisHandler {
 					// Wait for message and write
 					AisMessage aisMessage = queue.take();
 					if (isFilterAllowed(aisMessage)) {
-						String sendingMessage = aisMessage.reassemble();
-						System.out.println(sendingMessage);
+						String sendingMessage = aisMessage.reassemble() + "\r\n";
+						System.out.print(sendingMessage);
 						out.print(sendingMessage);
 					}
 				}

@@ -39,8 +39,8 @@ public class TcpProviderClient extends BusConsumer {
 			while (!out.checkError()) {
 				AisMessage aisMessage = queue.take();				
 				if (isFilterAllowed(aisMessage)) {
-					String sendingMessage = aisMessage.reassemble();
-					System.out.println(sendingMessage);
+					String sendingMessage = aisMessage.reassemble() + "\r\n";
+					System.out.print(sendingMessage);
 					out.print(sendingMessage);				
 				}
 			}

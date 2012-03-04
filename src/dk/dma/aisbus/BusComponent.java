@@ -14,7 +14,7 @@ public class BusComponent {
 	protected int doubleFilterWindow;
 	protected Set<Integer> messageFilter = null;
 	protected boolean gzipCompress = false;
-	protected int gzipBufferSize = 2048;
+	protected int gzipBufferSize = 2048;		
 	
 	public BusComponent(MessageBus messageBus) {
 		this.messageBus = messageBus;
@@ -82,5 +82,5 @@ public class BusComponent {
 	public void setGzipBufferSize(int gzipBufferSize) {
 		this.gzipBufferSize = gzipBufferSize;
 	}
-
+	
 }

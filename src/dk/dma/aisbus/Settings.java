@@ -69,6 +69,7 @@ public class Settings {
 			tcpReader.setDoubleFilterWindow(getInt("tcp_reader_doublet_filtering." + name, "0"));
 			tcpReader.setMessageFilter(props.getProperty("tcp_reader_message_id_filter." + name, ""));
 			tcpReader.setGzipCompress(props.getProperty("tcp_reader_gzip_compress." + name, "").equalsIgnoreCase("true"));
+			tcpReader.setSourceName(props.getProperty("tcp_reader_source_name." + name, null));
 
 			tcpReaders.put(name, tcpReader);
 
@@ -85,6 +86,7 @@ public class Settings {
 			tcpServer.setDoubleFilterWindow(getInt("tcp_server_doublet_filtering." + name, "0"));
 			tcpServer.setMessageFilter(props.getProperty("tcp_server_message_id_filter." + name, ""));
 			tcpServer.setGzipCompress(props.getProperty("tcp_server_gzip_compress." + name, "").equalsIgnoreCase("true"));
+			tcpServer.setSourceName(props.getProperty("tcp_server_source_name." + name, null));
 
 			tcpServers.put(name, tcpServer);
 

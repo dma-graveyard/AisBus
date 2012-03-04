@@ -11,11 +11,10 @@ import org.apache.log4j.Logger;
 import dk.frv.ais.filter.MessageDoubletFilter;
 import dk.frv.ais.filter.MessageDownSample;
 import dk.frv.ais.handler.IAisHandler;
-import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.reader.AisStreamReader;
 
-public class TcpServer extends BusComponent implements IAisHandler, Runnable {
+public class TcpServer extends BusProviderComponent implements Runnable {
 	
 	private static final Logger LOG = Logger.getLogger(TcpServer.class);
 	
@@ -89,13 +88,6 @@ public class TcpServer extends BusComponent implements IAisHandler, Runnable {
 		
 	}
 
-	@Override
-	public void receive(AisMessage aisMessage) {
-		if (isFilterAllowed(aisMessage)) {
-			messageBus.push(aisMessage);
-		}
-	}
-	
 	public void setTimeout(int timeout) {
 		this.timeout = timeout;
 	}
@@ -107,5 +99,5 @@ public class TcpServer extends BusComponent implements IAisHandler, Runnable {
 	public int getPort() {
 		return port;
 	}
-
+	
 }

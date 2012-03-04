@@ -9,7 +9,6 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.reader.RoundRobinAisTcpReader;
 
 public class Settings {
@@ -59,9 +58,6 @@ public class Settings {
 			}
 			reader.setTimeout(getInt("tcp_reader_timeout." + name, "10"));
 			reader.setReconnectInterval(getInt("tcp_reader_reconnect_interval." + name, "5") * 1000);
-
-			// Register proprietary handlers
-			reader.addProprietaryFactory(new GatehouseFactory());
 
 			// Make TCP reader
 			TcpReader tcpReader = new TcpReader(reader, messageBus);

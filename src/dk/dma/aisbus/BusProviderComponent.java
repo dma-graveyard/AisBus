@@ -23,7 +23,7 @@ public abstract class BusProviderComponent extends BusComponent implements IAisH
 			if (sourceName != null) {
 				DmaSourceTag dmaSourceTag = new DmaSourceTag();
 				dmaSourceTag.setSourceName(sourceName);
-				//aisMessage.setTag(dmaSourceTag);
+				aisMessage.setTag(dmaSourceTag);
 			}			
 			messageBus.push(aisMessage);
 		}

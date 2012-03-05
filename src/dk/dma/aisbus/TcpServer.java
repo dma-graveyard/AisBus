@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import dk.frv.ais.filter.MessageDoubletFilter;
 import dk.frv.ais.filter.MessageDownSample;
 import dk.frv.ais.handler.IAisHandler;
+import dk.frv.ais.proprietary.DmaFactory;
 import dk.frv.ais.proprietary.GatehouseFactory;
 import dk.frv.ais.reader.AisStreamReader;
 
@@ -70,6 +71,7 @@ public class TcpServer extends BusProviderComponent implements Runnable {
 				}
 				
 				AisStreamReader streamReader = new AisStreamReader(inputStream);
+				streamReader.addProprietaryFactory(new DmaFactory());
 				streamReader.addProprietaryFactory(new GatehouseFactory());
 				streamReader.registerHandler(handler);
 				streamReader.start();

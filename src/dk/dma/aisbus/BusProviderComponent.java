@@ -1,5 +1,7 @@
 package dk.dma.aisbus;
 
+import java.util.Date;
+
 import dk.frv.ais.handler.IAisHandler;
 import dk.frv.ais.message.AisMessage;
 import dk.frv.ais.proprietary.DmaSourceTag;
@@ -23,6 +25,7 @@ public abstract class BusProviderComponent extends BusComponent implements IAisH
 			if (sourceName != null) {
 				DmaSourceTag dmaSourceTag = new DmaSourceTag();
 				dmaSourceTag.setSourceName(sourceName);
+				dmaSourceTag.setTimestamp(new Date());
 				aisMessage.setTag(dmaSourceTag);
 			}			
 			messageBus.push(aisMessage);
